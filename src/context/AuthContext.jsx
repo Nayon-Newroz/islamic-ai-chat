@@ -5,8 +5,8 @@ import authReducer from "./authReducer";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider(props) {
-  const [dizli_admin_panel, dispatch] = useReducer(authReducer, {}, () => {
-    const localData = localStorage.getItem("dizli_admin_panel");
+  const [islamic_ai_admin_panel, dispatch] = useReducer(authReducer, {}, () => {
+    const localData = localStorage.getItem("islamic_ai_admin_panel");
     return localData ? JSON.parse(localData) : {};
   });
 
@@ -27,13 +27,13 @@ export default function AuthContextProvider(props) {
 
   useEffect(() => {
     localStorage.setItem(
-      "dizli_admin_panel",
-      JSON.stringify(dizli_admin_panel)
+      "islamic_ai_admin_panel",
+      JSON.stringify(islamic_ai_admin_panel)
     );
   }, [login]);
 
   return (
-    <AuthContext.Provider value={{ login, dizli_admin_panel, logout }}>
+    <AuthContext.Provider value={{ login, islamic_ai_admin_panel, logout }}>
       {props.children}
     </AuthContext.Provider>
   );

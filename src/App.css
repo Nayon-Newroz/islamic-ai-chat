@@ -1,38 +1,54 @@
-.App {
-  text-align: center;
+.bg {
+  /* border: 2px solid black; */
+  /* padding: 25px; */
+  background-image: url("../public/main_bg.png");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: top;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* width */
+.chatBox::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Track */
+.chatBox::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Handle */
+.chatBox::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Handle on hover */
+.chatBox::-webkit-scrollbar-thumb:hover {
+  background: darkgray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: darkgray;
 }

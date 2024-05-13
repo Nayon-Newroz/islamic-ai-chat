@@ -17,7 +17,7 @@ import { styled, useTheme } from "@mui/material/styles";
 
 const LoginOTPVarify = ({ email, reference }) => {
   const navigate = useNavigate();
-  const { dizli_admin_panel, logout, login } = useContext(AuthContext);
+  const { islamic_ai_admin_panel, logout, login } = useContext(AuthContext);
   const theme = useTheme();
   const [showOTPSection, setShowOTPSection] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -84,8 +84,8 @@ const LoginOTPVarify = ({ email, reference }) => {
     try {
       setLoading(true);
       let data = {
-        email: dizli_admin_panel.email,
-        tempToken: dizli_admin_panel.temp_token,
+        email: islamic_ai_admin_panel.email,
+        tempToken: islamic_ai_admin_panel.temp_token,
         otp: otp,
       };
 
@@ -120,7 +120,7 @@ const LoginOTPVarify = ({ email, reference }) => {
   };
 
   const lastPartOfEmail = () => {
-    const email = dizli_admin_panel.email;
+    const email = islamic_ai_admin_panel.email;
     const afterAt = email.split("@")[1];
     return "*****@" + afterAt;
   };
@@ -154,7 +154,12 @@ const LoginOTPVarify = ({ email, reference }) => {
             variant="h6"
             sx={{ mb: 6, fontWeight: 500, textAlign: "left" }}
           >
-            <IconButton sx={{ borderRadius: "4px", mr: 0.5 }}>
+            <IconButton
+              sx={{ borderRadius: "4px", mr: 0.5 }}
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               <svg
                 width="20"
                 height="14"

@@ -18,7 +18,7 @@ import { Box } from "@mui/material";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const { dizli_admin_panel, login, logout } = useContext(AuthContext);
+  const { islamic_ai_admin_panel, login, logout } = useContext(AuthContext);
   const [oldPasswordShow, setOldPasswordShow] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPasswordShow, setNewPasswordShow] = useState(false);

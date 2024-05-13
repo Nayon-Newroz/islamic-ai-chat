@@ -12,6 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { AuthContext } from "../../context/AuthContext";
 import ForgotPasswordResetPassword from "./ForgotPasswordResetPassword";
 import OtpInput from "react-otp-input";
+import { IconButton } from "@mui/material";
 // const useStyles = makeStyles((theme) => ({
 
 //   newInputStyle: {
@@ -31,28 +32,67 @@ import OtpInput from "react-otp-input";
 
 const ForgotPasswordOTPVarify = ({ email, reference }) => {
   const navigate = useNavigate();
-  const { login, dizli_admin_panel } = useContext(AuthContext);
+  const { login, islamic_ai_admin_panel } = useContext(AuthContext);
+  // const newInputStyle = {
+  //   background: "none",
+  //   minWidth: "40px",
+  //   minHeight: "40px",
+  //   fontSize: "16px",
+  //   borderRadius: "3px",
+  //   border: "1px solid #c3bebe",
+  // };
+  // const newFocusStyle = {
+  //   borderRadius: "3px",
+  //   border: "1px solid #353b48",
+  //   outline: "1px solid #353b48",
+  // };
+
   const newInputStyle = {
-    background: "none",
-    minWidth: "40px",
-    minHeight: "40px",
+    background: "#FAFAFA",
+    minWidth: "48px",
+    minHeight: "48px",
     fontSize: "16px",
-    borderRadius: "3px",
-    border: "1px solid #c3bebe",
+    borderRadius: "6px",
+    border: "0px solid #969696",
+    // "&::focus": {
+    //   width: "250px",
+    // },
+  };
+  const newErrorInputStyle = {
+    background: "#FFECEC",
+    minWidth: "48px",
+    minHeight: "48px",
+    fontSize: "16px",
+    borderRadius: "6px",
+    border: "2px solid #F23836",
+    // "&::focus": {
+    //   width: "250px",
+    // },
   };
   const newFocusStyle = {
-    borderRadius: "3px",
-    border: "1px solid #353b48",
-    outline: "1px solid #353b48",
+    // borderRadius: "6px",
+    // border: `1px solid ${theme.palette.text.light}`,
+    // outline: `none`,
+
+    outline: "none", // You may want to remove the default outline
+    borderColor: "#ddd !important", // Your desired focus border color
   };
-  const [showOTPSection, setShowOTPSection] = useState(true);
+  const [showOTPSection, setShowOTPSection] = useState(true); /// 111
   const [loading, setLoading] = useState(false);
   const [otpTimeOut, setOtpTimeOut] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [minutes, setMinutes] = useState(5);
+  const [errors, setErrors] = useState("");
   const [myOTP, setMyOTP] = useState({ otp: "" });
+  // const handleChange = (otp) => {
+  //   setMyOTP({ otp });
+  // };
+
   const handleChange = (otp) => {
     setMyOTP({ otp });
+    if (otp.length === 6) {
+      onSubmit(otp);
+    }
   };
 
   const buttonref = useRef(null);
@@ -70,12 +110,58 @@ const ForgotPasswordOTPVarify = ({ email, reference }) => {
     });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  // const onSubmit = async (e) => {
+  //   e.preventDefault();
 
-    setShowOTPSection(false);
+  //   setShowOTPSection(false);
+  // };
+
+  const onSubmit = async (otp) => {
+    // e.preventDefault();
+    // setErrors(false);
+    try {
+      setLoading(true);
+      let data = {
+        email: email,
+        // tempToken: islamic_ai_admin_panel.temp_token,
+        otp: otp,
+      };
+
+      let url = `/api/v1/public/auth/admin/forgot-password/verify-otp`;
+      let response = await axios({
+        url: url,
+        method: "post",
+        data: data,
+      });
+
+      console.log("response", response);
+      if (response.status === 200) {
+        login(response.data.data);
+        // login(response.data.data);
+        handleSnakbarOpen("Successful", "success");
+        // navigate("/dashboard");
+        setShowOTPSection(false);
+      } else {
+        handleSnakbarOpen(response.data.messages, "error");
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("catch error", error);
+      if (error?.response?.status === 500) {
+        handleSnakbarOpen(error?.response?.statusText, "error");
+      } else {
+        // handleSnakbarOpen(error?.response?.data?.message, "error");
+        setErrors(error?.response?.data?.message);
+      }
+    }
   };
-
+  const lastPartOfEmail = () => {
+    // const email = islamic_ai_admin_panel.email;
+    const afterAt = email.split("@")[1];
+    return "*****@" + afterAt;
+  };
   return (
     <React.Fragment>
       {showOTPSection ? (
@@ -87,37 +173,72 @@ const ForgotPasswordOTPVarify = ({ email, reference }) => {
         >
           <div
             style={{
+              width: "470px",
               padding: "50px",
+              padding: "40px 60px",
               background: "#fff",
               borderRadius: "10px",
-              textAlign: "center",
-              width: "400px",
-              // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              border: `1px solid #E5E5E5`,
+              boxSizing: "border-box",
             }}
           >
-            <img
-              src="/logo.svg"
-              alt=""
-              style={{ display: "block", margin: "auto", maxWidth: "155px" }}
-            />{" "}
-            <br />
             <Typography
-              variant="h5"
-              component="div"
-              style={{ marginBottom: "30px" }}
+              variant="h6"
+              sx={{ mb: 6, fontWeight: 500, textAlign: "left" }}
             >
-              Verify your identity.
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "16px",
-                  letterSpacing: "2px",
-                  marginTop: "5px",
+              <IconButton
+                sx={{ borderRadius: "4px", mr: 0.5 }}
+                onClick={() => {
+                  navigate("/");
                 }}
               >
-                {" "}
-                We have sent a 6 digits varification code to {email}
-              </span>
+                <svg
+                  width="20"
+                  height="14"
+                  viewBox="0 0 20 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.71258 0.929932L1.64258 6.99993L7.71258 13.0699"
+                    stroke="#555555"
+                    stroke-width="1.5"
+                    stroke-miterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M18.6425 7H1.8125"
+                    stroke="#555555"
+                    stroke-width="1.5"
+                    stroke-miterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </IconButton>
+              Verification
+            </Typography>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 2.5, fontWeight: 500, textAlign: "left" }}
+            >
+              We texted you a code to verify your account
+            </Typography>
+            <Typography
+              variant="medium"
+              color="text.light"
+              sx={{ fontWeight: 500, textAlign: "left" }}
+            >
+              Enter the security code we have sent to:
+            </Typography>
+            <Typography
+              variant="medium"
+              color="text.main"
+              sx={{ mb: 0.75, fontWeight: 500, textAlign: "left" }}
+            >
+              {lastPartOfEmail()}
             </Typography>
             {/* {otpTimeOut && (
             <React.Fragment>
@@ -181,33 +302,105 @@ const ForgotPasswordOTPVarify = ({ email, reference }) => {
                   spacing={3}
                 >
                   <Grid item xs={12}>
-                    {/* <OtpInput
-                      value={myOTP.otp}
-                      onChange={handleChange}
-                      numInputs={6}
-                      isInputNum={true}
-                      shouldAutoFocus={true}
-                      isInputSecure={true}
-                      inputStyle={newInputStyle}
-                      focusStyle={newFocusStyle}
-                      containerStyle={{ justifyContent: "space-between" }}
-                    /> */}
                     <OtpInput
                       value={myOTP.otp}
                       onChange={handleChange}
                       numInputs={6}
                       isInputNum={true}
-                      shouldAutoFocus={true}
+                      // shouldAutoFocus={true}
                       isInputSecure={true}
-                      // renderSeparator={<span>-</span>}
-                      inputStyle={newInputStyle}
-                      focusStyle={newFocusStyle}
-                      renderInput={(props) => <input {...props} />}
-                      containerStyle={{ justifyContent: "space-between" }}
+                      renderSeparator={<span> &nbsp;&nbsp;</span>}
+                      inputStyle={
+                        errors?.length > 0 ? newErrorInputStyle : newInputStyle
+                      }
+                      // focusStyle={newFocusStyle}
+                      focusStyle={{
+                        outline: "none",
+                        border: "2px solid red",
+                        borderRadius: "8px",
+                      }}
+                      renderInput={(props) => (
+                        <input
+                          {...props}
+                          className={
+                            errors?.length > 0
+                              ? "error-custom-otp-input"
+                              : "custom-otp-input"
+                          }
+                        />
+                      )}
                     />
+                    {errors?.length > 0 && (
+                      <Typography
+                        variant="medium"
+                        color="error.main"
+                        sx={{ mt: 0.75, fontWeight: 500, textAlign: "left" }}
+                      >
+                        <svg
+                          width="17"
+                          height="16"
+                          viewBox="0 0 17 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          style={{ position: "relative", top: 3 }}
+                        >
+                          <path
+                            d="M8.28581 14.6667C11.9525 14.6667 14.9525 11.6667 14.9525 8.00004C14.9525 4.33337 11.9525 1.33337 8.28581 1.33337C4.61914 1.33337 1.61914 4.33337 1.61914 8.00004C1.61914 11.6667 4.61914 14.6667 8.28581 14.6667Z"
+                            stroke="#F23836"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.28906 10.6666L8.28906 7.33329"
+                            stroke="#F23836"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.29199 5.33337L8.286 5.33337"
+                            stroke="#F23836"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        &nbsp; Please enter valid OTP
+                      </Typography>
+                    )}
+                    <Typography
+                      variant="medium"
+                      color="text.main"
+                      sx={{ mt: 0.75, fontWeight: 500, textAlign: "left" }}
+                    >
+                      5:00
+                    </Typography>
+                    <Typography
+                      variant="medium"
+                      color="text.light"
+                      sx={{
+                        mt: 0.75,
+                        mt: 2.5,
+                        fontWeight: 500,
+                        textAlign: "left",
+                      }}
+                    >
+                      Didn’t receive a code?
+                      <Button
+                        sx={{
+                          color: "#222222",
+                          borderBottom: "1px solid #222222",
+                          borderRadius: "0px",
+                          p: 0,
+                        }}
+                      >
+                        RESEND
+                      </Button>
+                    </Typography>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Button
                       disableElevation
                       variant="contained"
@@ -242,7 +435,7 @@ const ForgotPasswordOTPVarify = ({ email, reference }) => {
                     >
                       Back to Login
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </React.Fragment>
             )}

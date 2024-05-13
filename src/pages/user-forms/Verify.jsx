@@ -16,7 +16,7 @@ import { Box } from "@mui/material";
 
 const Verify = () => {
   const navigate = useNavigate();
-  const { login, dizli_admin_panel } = useContext(AuthContext);
+  const { login, islamic_ai_admin_panel } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [otpTimeOut, setOtpTimeOut] = useState(false);
@@ -48,8 +48,8 @@ const Verify = () => {
     try {
       setLoading(true);
       let data = {
-        email: dizli_admin_panel.email,
-        password: dizli_admin_panel.password,
+        email: islamic_ai_admin_panel.email,
+        password: islamic_ai_admin_panel.password,
         token: "my token",
       };
 
@@ -108,7 +108,7 @@ const Verify = () => {
             >
               {" "}
               We have sent a 6 digits varification code to{" "}
-              {dizli_admin_panel.email}
+              {islamic_ai_admin_panel.email}
             </span>
           </Typography>
           {otpTimeOut === false && (

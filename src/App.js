@@ -285,7 +285,7 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.headers.common["Content-Type"] = "application/json";
 function App() {
   return (
-    <div>
+    <div className="bg">
       <ThemeProvider theme={theme}>
         <SnackbarProvider
           maxSnack={5}

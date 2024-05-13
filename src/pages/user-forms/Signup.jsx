@@ -24,14 +24,17 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import { styled, useTheme } from "@mui/material/styles";
 
-const Login = () => {
+const Signup = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [checked, setChecked] = useState(true);
   const { login } = useContext(AuthContext);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -110,11 +113,7 @@ const Login = () => {
   };
 
   const onSubmit = async (e) => {
-    login({
-      email: email.trim(),
-      password: password.trim(),
-      access_token: "thisismytoken",
-    });
+    navigate("/");
     return;
     e.preventDefault();
 
@@ -244,8 +243,57 @@ const Login = () => {
             variant="h5"
             sx={{ fontWeight: 500, mb: 4, color: "#222", mb: 4 }}
           >
-            Welcome Back
+            Create an Account
           </Typography>
+          <Box sx={{ mb: 2 }}>
+            <TextField
+              sx={{ ...customeTextFeild }}
+              placeholder="Name"
+              fullWidth
+              // size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <svg
+                      width="24"
+                      height="25"
+                      viewBox="0 0 24 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 12.5C14.7614 12.5 17 10.2614 17 7.5C17 4.73858 14.7614 2.5 12 2.5C9.23858 2.5 7 4.73858 7 7.5C7 10.2614 9.23858 12.5 12 12.5Z"
+                        stroke="#969696"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M20.59 22.5C20.59 18.63 16.74 15.5 12 15.5C7.26003 15.5 3.41003 18.63 3.41003 22.5"
+                        stroke="#969696"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />{" "}
+            {errors?.name && (
+              <Typography
+                variant="small"
+                color="error.main"
+                sx={{ textAlign: "left" }}
+              >
+                {errors.email.toString()}
+              </Typography>
+            )}
+          </Box>
           <Box sx={{ mb: 2 }}>
             <TextField
               sx={{ ...customeTextFeild }}
@@ -386,6 +434,97 @@ const Login = () => {
               </Typography>
             )}
           </Box>
+          <Box sx={{ mb: 2 }}>
+            <FormControl
+              fullWidth
+              variant="outlined"
+              sx={{ ...customeTextFeild }}
+            >
+              <OutlinedInput
+                type={confirmPasswordShow ? "text" : "password"}
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                // size="small"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 10V8C6 4.69 7 2 12 2C17 2 18 4.69 18 8V10"
+                        stroke="#969696"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M17 22H7C3 22 2 21 2 17V15C2 11 3 10 7 10H17C21 10 22 11 22 15V17C22 21 21 22 17 22Z"
+                        stroke="#969696"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M15.9965 16H16.0054"
+                        stroke="#969696"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M11.9955 16H12.0045"
+                        stroke="#969696"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M7.99451 16H8.00349"
+                        stroke="#969696"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() =>
+                        setConfirmPasswordShow(!confirmPasswordShow)
+                      }
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      sx={{ mr: 0.5 }}
+                    >
+                      {confirmPasswordShow ? (
+                        <VisibilityOffOutlinedIcon sx={{ color: "#969696" }} />
+                      ) : (
+                        <RemoveRedEyeOutlinedIcon sx={{ color: "#969696" }} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            {errors?.password && (
+              <Typography
+                variant="small"
+                color="error.main"
+                sx={{ textAlign: "left" }}
+              >
+                {errors.password.toString()}
+              </Typography>
+            )}
+          </Box>
 
           {/* <Grid container alignItems="center" sx={{ mb: 4 }}>
             <Grid item xs={12}>
@@ -415,19 +554,7 @@ const Login = () => {
               </FormGroup>
             </Grid>
           </Grid> */}
-          <Typography
-            component="div"
-            color="text.fade"
-            style={{
-              fontWeight: 500,
-              fontSize: "14px",
-              textAlign: "right",
-              cursor: "pointer",
-            }}
-            onClick={() => navigate("/forgot-password")}
-          >
-            Forgot Password?
-          </Typography>
+
           <Button
             variant="contained"
             disableElevation
@@ -455,7 +582,7 @@ const Login = () => {
               mb: 3,
             }}
           >
-            Register in with social
+            Login with social
           </Typography>
           <Grid
             container
@@ -572,12 +699,12 @@ const Login = () => {
               fontWeight: 500,
             }}
           >
-            Don’t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              to="/signup"
+              to="/login"
               style={{ textDecoration: "none", color: "#10A37F" }}
             >
-              REGISTER
+              Login
             </Link>
           </Typography>
         </form>
@@ -588,4 +715,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

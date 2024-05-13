@@ -20,7 +20,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const { dizli_admin_panel, login, logout } = useContext(AuthContext);
+  const { islamic_ai_admin_panel, login, logout } = useContext(AuthContext);
   const [oldPasswordShow, setOldPasswordShow] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPasswordShow, setNewPasswordShow] = useState(false);
@@ -93,12 +93,12 @@ const ResetPassword = () => {
       setLoading(true);
       try {
         const formData = new FormData();
-        formData.append("tempPassword", dizli_admin_panel.password);
+        formData.append("tempPassword", islamic_ai_admin_panel.password);
         formData.append("newPassword", newPassword);
         formData.append("confirmNewPassword", confirmPassword);
-        formData.append("tempToken", dizli_admin_panel.temp_token);
-        // let token = await RefreshToken(dizli_admin_panel.access_token)
-        let token = dizli_admin_panel.access_token;
+        formData.append("tempToken", islamic_ai_admin_panel.temp_token);
+        // let token = await RefreshToken(islamic_ai_admin_panel.access_token)
+        let token = islamic_ai_admin_panel.access_token;
         let response = await axios({
           url: "/api/v1/private/auth/admin/change-password",
           method: "put",
@@ -142,6 +142,7 @@ const ResetPassword = () => {
   const customeTextFeild = {
     // padding: "15px 20px",
     background: "#FAFAFA",
+    borderRadius: "12px",
     "& label.Mui-focused": {
       color: "#A0AAB4",
     },
